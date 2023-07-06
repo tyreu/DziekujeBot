@@ -2,6 +2,7 @@
 using DziekujeBot.AppData;
 using DziekujeBot.Models;
 using DziekujeBot.Services;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -97,7 +98,7 @@ namespace DziekujeBot
                     using var context = BrowsingContext.New(config);
                     using var document = await context.OpenAsync(BotData.TargetUrl);
                     //получить элементы списка объявлений
-                    var ads = document.QuerySelectorAll($"div.product-list__item:nth-child(-n+{MAX_COUNT_ADS}) a");
+                    var ads = document.QuerySelectorAll($"div.product-list__item:nth-child(-n+{MAX_COUNT_ADS}) a").OrderBy(x => DateTime.Parse(x.Children[1].TextContent));
                     //цикл по первым MAX_COUNT_ADS объявлениям
                     foreach (var ad in ads)
                     {
